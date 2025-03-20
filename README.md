@@ -1,14 +1,24 @@
 - Giao diện người dùng:
+
+  - Trang đăng ký tài khoản:
+    - Đăng ký
+  - Trang đăng nhập:
+    - Đăng nhập
   - Trang chủ tìm :
-    + Tìm kiếm theo tên tác giả và từ khóa
+    - Tìm kiếm theo tên tác giả và từ khóa
   - Trang chi tiết sách
-    + Mượn sách
+    - Mượn sách
   - Trang thông tin cá nhân và lịch sử mượn sách
-    + Chỉnh sửa thông tin cá nhân
-    + Đổi mật khẩu
-    + Xem lịch sử trả sách
+    - Chỉnh sửa thông tin cá nhân
+    - Đổi mật khẩu
+    - Xem lịch sử trả sách
 
 - Giao diện admin:
   - Giao diện danh sách duyệt
+    - Duyệt mượn
   - Lịch sử mượn
+    - Xem lịch sử mượn
   - Thêm và chỉnh sửa thông tin sách
+    - Xem danh sách sách hiện có
+    - Cập nhật số lượng sách
+    - Cập nhật thông tin sách

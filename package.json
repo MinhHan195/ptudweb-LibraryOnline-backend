@@ -4,7 +4,7 @@
   "description": "- Giao diện người dùng:\r   - Trang chủ tìm :\r     + Tìm kiếm theo tên tác giả và từ khóa\r   - Trang chi tiết sách\r     + Mượn sách\r   - Trang thông tin cá nhân và lịch sử mượn sách\r     + Chỉnh sửa thông tin cá nhân\r     + Đổi mật khẩu\r     + Xem lịch sử trả sách",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -17,12 +17,20 @@
   },
   "homepage": "https://github.com/MinhHan195/ptudweb-library-online#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "mongodb": "^6.15.0",
+    "nodemailer": "^6.10.0"
   },
   "devDependencies": {
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
+    "nodemon": "^3.1.9",
     "prettier": "^3.5.3"
   }
 }
