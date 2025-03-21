@@ -5,7 +5,7 @@ const {addMinutes, isAfter} = require("date-fns");
 
 const ApiError = require("../api-error");
 const MongoDB = require("../utils/mongodb.util");
-const AccountService = require("../service/account.service");
+const AccountService = require("../services/account.service");
 const Joi = require("../vaildation/account.validate");
 
 exports.create = async (req, res, next) => {

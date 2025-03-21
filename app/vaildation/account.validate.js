@@ -11,3 +11,8 @@ exports.registerUserValidate = Joi.object({
         .required()
         .messages({ "ConfirmPassword": "Mật khẩu xác nhận không khớp!" }),
 })
+
+exports.logInValidate = Joi.object({
+    email: Joi.string().email().required(),
+    password:Joi.string().min(6).max(30).required(),
+})
