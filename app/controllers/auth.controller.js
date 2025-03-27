@@ -43,7 +43,8 @@ exports.logIn = async (req, res, next) => {
         // B5: Trả ra thông báo cho người dùng
         account.password = undefined;
         return res.send({
-            message: "Đăng nhập thành công"
+            message: "Đăng nhập thành công",
+            role: account.role
         });
     } catch (error) {
         console.log(error);
