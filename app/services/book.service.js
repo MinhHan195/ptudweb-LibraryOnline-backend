@@ -9,7 +9,8 @@ class BookService {
         const book = {
             tensach: payload.tensach,
             dongia: payload.dongia,
-            soquyen: payload.soquyen, 
+            soquyen: Number(payload.soquyen), 
+            soquyenconlai: Number(payload.soquyen), 
             namxuatban: payload.namxuatban,
             nhaxuatban: payload.nhaxuatban,
             tacgia: payload.tacgia,
@@ -71,6 +72,44 @@ class BookService {
         return await this.Contact.findOneAndDelete({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null 
         })
+    }
+
+    async subQuantity(id){
+        const filter = {
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+        };
+        const book = await this.findById(id);
+        if(book.soquyenconlai === 0) {
+            return false;
+        }else{
+            book.soquyenconlai = book.soquyenconlai  - 1;
+        }
+        console.log(book);
+        const result = await this.Contact.findOneAndUpdate(
+            filter,
+            { $set: book},
+            { returnDocument: "after"}
+        );
+        return result;
+    }
+
+    async addQuantity(id){
+        const filter = {
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+        };
+        const book = await this.findById(id);
+        if(book.soquyenconlai === book.soquyen) {
+            return false;
+        }else{
+            book.soquyenconlai = book.soquyenconlai + 1;
+        }
+        console.log(book);
+        const result = await this.Contact.findOneAndUpdate(
+            filter,
+            { $set: book},
+            { returnDocument: "after"}
+        );
+        return result;
     }
 }
 module.exports = BookService;

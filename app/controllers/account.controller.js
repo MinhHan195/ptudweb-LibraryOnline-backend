@@ -56,3 +56,28 @@ exports.resetPassword = async (req,res,next) => {
         return next(new ApiError(500,"Something wrong when changing password"));
     }
 }
+
+exports.getAll = async (req, res, next) => {
+    try {
+        const accountService = new AccountService(MongoDB.client);
+        const result = await accountService.find({});
+        return res.send(result);
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500,"Có lỗi trong khi lấy danh sách tài khoản người dùng"));
+    }
+}
+
+exports.delete = async (req, res, next) => {
+    try {
+        const accountService = new AccountService(MongoDB.client);
+        const result = await accountService.delete(req.params.id);
+        console.log(result);
+        return res.send({
+            message: "Xóa người dùng thành công",
+        })
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500,"Có lỗi trong khi xóa tài khoản người dùng"));
+    }
+}

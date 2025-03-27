@@ -27,7 +27,7 @@ exports.logIn = async (req, res, next) => {
         const isMatch = await bcrypt.compare(req.body.password, account.password);
         console.log(isMatch);
         if (!isMatch) {
-            return next(new ApiError(400, "Mat khau khong dung"));
+            return res.send({ message: "Mật khẩu không chính xác" });
         }
 
         // B4: Tạo JWT
@@ -43,7 +43,7 @@ exports.logIn = async (req, res, next) => {
         // B5: Trả ra thông báo cho người dùng
         account.password = undefined;
         return res.send({
-            message: "Dang nhap thanh cong"
+            message: "Đăng nhập thành công"
         });
     } catch (error) {
         console.log(error);

@@ -8,7 +8,8 @@ const router = express.Router();
 
 
 router.route("/")
-    .post(RegisterController.create);
+    .post(RegisterController.create)
+    .get(AccountController.getAll);
 
 router.route("/verify")
     .get(RegisterController.verify);
@@ -22,5 +23,8 @@ router.route("/reset/reset_request")
 
 router.route("/reset/password")
     .post(AccountController.resetPassword);
+
+router.route("/:id")
+    .delete(AccountController.delete);
 
 module.exports = router;

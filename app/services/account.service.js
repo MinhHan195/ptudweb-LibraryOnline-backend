@@ -3,14 +3,17 @@ const bcrypt = require("bcrypt");
 
 class AccountService{
     constructor(client){
-        this.Contact = client.db().collection("account");
+        this.Contact = client.db().collection("docgia");
     }
 
     async extractAccountData(payload, hashToken) {
         const account = {
-            name: payload.name,
+            hoten: payload.hoten,
             email: payload.email,
-            phone: payload.phone, 
+            ngaysinh: payload.ngaysinh,
+            gioitinh: payload.gioitinh,
+            sodienthoai: payload.sodienthoai, 
+            diachi: payload.diachi,
             role: payload.role,
             password : await bcrypt.hash(payload.password, 10),
             activeStatus: false,
@@ -54,6 +57,12 @@ class AccountService{
         );
         return result;
     }
+
+    async find(filter) {
+        const cursor = await this.Contact.find(filter);
+        return await cursor.toArray();
+    }
+
     async findByEmail(email) {
         return await this.Contact.findOne({
             email: email,
@@ -74,6 +83,12 @@ class AccountService{
             {returnDocument: "after"}
         );
         return result;
+    }
+
+    async delete(id){
+        return await this.Contact.findOneAndDelete({
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null
+        })
     }
 }
 
