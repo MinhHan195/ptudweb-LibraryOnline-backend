@@ -9,24 +9,25 @@ const Joi = require("../vaildation/account.validate");
 exports.logIn = async (req, res, next) => {
     try {
         // B1: Validate phía server
-        const {value, error} = Joi.logInValidate.validate(req.body);
-        if(error){
-            return next(new ApiError(400,error.details[0].message));
+        const { value, error } = Joi.logInValidate.validate(req.body);
+        if (error) {
+            return next(new ApiError(400, error.details[0].message));
         }
         // B2: Kiểm tra email tồn tại hay chưa
         const accountService = new AccountService(MongoDB.client);
         const account = await accountService.findByEmail(req.body.email);
-        if(!account){
-            return res.send({message: "Khong tim thay account"});
+        if (!account) {
+            return res.send({ message: "Khong tim thay account" });
         }
-        else if(!account.activeStatus){
-            return res.send({message: "Tai khoan chua duoc kich hoat"});
+        else if (!account.activeStatus) {
+            return res.send({ message: "Tai khoan chua duoc kich hoat" });
         }
-        
+
         // B3: Kiểm tra password
-        const isMatch = bcrypt.compare(req.body.password, account.password);
-        if(!isMatch){
-            return next(new ApiError(400,"Mat khau khong dung"));
+        const isMatch = await bcrypt.compare(req.body.password, account.password);
+        console.log(isMatch);
+        if (!isMatch) {
+            return next(new ApiError(400, "Mat khau khong dung"));
         }
 
         // B4: Tạo JWT
@@ -42,11 +43,30 @@ exports.logIn = async (req, res, next) => {
         // B5: Trả ra thông báo cho người dùng
         account.password = undefined;
         return res.send({
-            message: "Dang nhap thanh cong",
-            user: account,
+            message: "Dang nhap thanh cong"
         });
     } catch (error) {
         console.log(error);
         return next(new ApiError(500, "Có lỗi trong quá trình đăng nhập"))
     }
+}
+
+exports.getUserData = async (req, res, next) => {
+    try {
+        // Lấy account từ id đc kiểm từ middleware
+        const accountService = new AccountService(MongoDB.client);
+        const account = await accountService.findById(req.user._id);
+        if (!account) {
+            return next(new ApiError(404, "User not found"));
+        }
+        delete account.password;
+        delete account.dateTimeCreate;
+        delete account.dateTimeUpdate;
+        return res.send(account);
+
+    } catch (error) {
+        console.log("Loi: ", error);
+        return next(new ApiError(500, "Có lỗi xảy ra trong khi lấy dữ liệu người dùng"));
+    }
+
 }

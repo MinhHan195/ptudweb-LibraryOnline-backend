@@ -16,3 +16,12 @@ exports.logInValidate = Joi.object({
     email: Joi.string().email().required(),
     password:Joi.string().min(6).max(30).required(),
 })
+
+exports.forgotPasswordValidate = Joi.object({
+    userId: Joi.string().required(),
+    newPassword: Joi.string().min(6).max(30).required(),
+    confirmNewPassword: Joi.string()
+        .valid(Joi.ref("newPassword"))
+        .required()
+        .messages({ 'any.only': 'Xác nhận mật khẩu không khớp' }),
+})

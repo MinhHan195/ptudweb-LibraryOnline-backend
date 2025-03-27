@@ -65,6 +65,16 @@ class AccountService{
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
     }
+
+    async changePassword(userId, newPassword){
+        const filter = {_id: ObjectId.isValid(userId) ? new ObjectId(userId) : null}
+        const result = await this.Contact.findOneAndUpdate(
+            filter,
+            {$set: {password: await bcrypt.hash(newPassword, 10)}},
+            {returnDocument: "after"}
+        );
+        return result;
+    }
 }
 
 module.exports = AccountService;

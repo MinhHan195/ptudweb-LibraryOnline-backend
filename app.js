@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const ApiError = require("./app/api-error");
 const accountRouter = require("./app/routers/account.route");
+const bookRouter = require("./app/routers/book.router");
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/accounts", accountRouter);
+app.use("/api/books", bookRouter);
 
 app.use((req, res, next) => {
     return next(new ApiError(404, "Resource not found"));

@@ -32,13 +32,15 @@ exports.create = async (req, res, next) => {
             html: `
                 <h1> Cảm ơn bạn đã đăng ký tài khoản</h1>
                 <p> Hãy kích hoạt tài khoản trong vòng 10 phút</p>
-                <a href="${process.env.URL}/api/accounts/verify?token=${token}&id=${document.insertedId}">
+                <a href="${process.env.FONTEND_URL}/login?token=${token}&id=${document.insertedId}">
                 Vui lòng click vào đây để kích hoạt tài khoản
                 </a>
             `
         })
         // B6: Thông báo cho người dùng tại tài khoảng thành công
-        return res.send(document);
+        return res.send({
+            message: "Tạo tài khoản thành công"
+        });
     } catch (error) {
         console.log(error);
         return next(
@@ -70,7 +72,7 @@ exports.verify = async (req, res, next) => {
         // B5: Kiểm tra token và kích hoạt tài khoản
         }else if(token === account.token){
             await accountService.activateAccount(id);
-            return res.send({message: "Tài khoản đã được kích hoạt thành công!"});
+            return res.send({message: "successful"});
         }
         return res.send(new ApiError(422, "Mã xác nhận không hợp lệ"));
     } catch (error) {
