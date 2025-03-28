@@ -48,6 +48,12 @@ class OrderService{
         }
         return false;
     }
+
+    async deleteById(id) {
+        return await this.Contact.findOneAndDelete({
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+        })
+    }
 }
 
 module.exports = OrderService;

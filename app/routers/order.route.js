@@ -12,5 +12,8 @@ router.route("/create/:bookId")
 router.route("/state/:state/:id")
     .get(orderController.switchState);
 
+router.route("/:id")
+    .get(orderController.getAllByUserId)
+    .delete(orderController.deleteOrderById);
 
 module.exports = router;

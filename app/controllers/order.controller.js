@@ -71,3 +71,53 @@ exports.switchState = async (req, res, next) => {
         return next(new ApiError(500,"Có lỗi xảy ra trong khi lấy lượt mượn sách"))
     }
 }
+
+exports.getAllByUserId = async (req, res, next) => {
+    try {
+        const orderService = new OrderService(MongoDB.client);
+        const bookService = new BookService(MongoDB.client)
+        const orders = await orderService.find({
+            madocgia: req.params.id
+        })
+        console.log(orders);
+        const data = [];
+        for(const order of orders) {
+            const book = await bookService.findById(order.masach);
+            data.push({ 
+                _id: order._id,
+                ngaymuon : order.ngaymuon,
+                ngaytra : order.ngaytra,
+                trangthai : order.trangthai,
+                imageUrl : book.imageUrl,
+                tensach : book.tensach,
+            })
+        }
+        return res.send(data);
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500,"Có lỗi xảy ra trong khi lấy danh sách mượn sách"))
+    }
+}
+
+exports.deleteOrderById = async (req, res, next) => {
+    try {
+        const orderService = new OrderService(MongoDB.client);
+        const order = await orderService.findById(req.params.id);
+        const bookService = new BookService(MongoDB.client);
+        const subResult = await bookService.subQuantity(order.masach);
+        if(subResult){
+            const result = await orderService.deleteById(req.params.id);
+            if(result.lastErrorObject.n===1){
+                return res.send({
+                    message: "Xóa thành công"
+                });
+            }
+        }
+        return res.send({
+            message: "Xóa thất bại"
+        });
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500,"Có lỗi xảy ra trong khi xóa đơn mượn sách"))
+    }
+}
